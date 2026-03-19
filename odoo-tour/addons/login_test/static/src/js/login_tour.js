@@ -1,38 +1,38 @@
-odoo.define("login_test.login_tour", function (require) {
-  "use strict";
+/** @odoo-module **/
 
-  const { Tour } = require("web.Tour");
-  const tour = Tour.register({
-    id: "login_tour",
-    name: "Login test tour",
-    mode: "test", // run only in test mode
-    steps: [
-      {
-        title: "Check we are on login page",
-        element: ".oe_login_form",
-      },
-      {
-        title: "Fill login",
-        element: 'input[name="login"]',
-        run: "text csd@reach52.com",
-      },
-      {
-        title: "Fill password",
-        element: 'input[name="password"]',
-        run: "text asd123!@#X",
-      },
-      {
-        title: "Submit login form",
-        element: 'button[type="submit"]',
-        run: "click",
-      },
-      {
-        title: "Wait for home screen",
-        element: ".o_user_menu",
-        // The presence of the user menu indicates a successful login
-      },
-    ],
-  });
+import { registry } from "@web/core/registry";
 
-  return tour;
+registry.category("web_tour.tours").add("login_tour", {
+  url: "/web/login",
+  test: true,
+  steps: () => [
+    {
+      trigger: ".oe_login_form",
+      content: "Check we are on login page",
+    },
+    {
+      trigger: 'input[name="login"]',
+      content: "Fill login",
+      run: "text csd@reach52.com",
+    },
+    {
+      trigger: 'input[name="password"]',
+      content: "Fill password",
+      run: "text asd123!@#X",
+    },
+    {
+      trigger: 'button[type="submit"]',
+      content: "Submit login form",
+      run: "click",
+    },
+    {
+      trigger: ".o_main_navbar",
+      // Increase timeout if the server is slow to log in
+      timeout: 10000,
+      content: "Wait for home screen",
+      run: () => {
+        console.log("Login Successful");
+      },
+    },
+  ],
 });

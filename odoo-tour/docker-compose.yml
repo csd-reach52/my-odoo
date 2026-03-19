@@ -2,15 +2,14 @@ services:
   db:
     image: postgres:16
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=odoo
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
     volumes:
       - odoo-db-data:/var/lib/postgresql/data
 
   web:
-    image: odoo:19.0
-    user: root
+    build: .  # This tells docker to use your Dockerfile
     depends_on:
       - db
     ports:
@@ -23,36 +22,6 @@ services:
       - HOST=db
       - USER=odoo
       - PASSWORD=odoo
-    entrypoint: >
-      /bin/bash -c "
-      apt-get update && 
-      apt-get install -y --no-install-recommends chromium fonts-liberation libnss3 && 
-      /entrypoint.sh odoo
-      "
-
-  # Separate service for running tests
-  test:
-    image: odoo:19.0
-    user: root
-    depends_on:
-      - db
-      - web
-    volumes:
-      - odoo-web-data:/var/lib/odoo
-      - ./addons:/mnt/extra-addons
-      - ./config:/etc/odoo
-    environment:
-      - HOST=db
-      - USER=odoo
-      - PASSWORD=odoo
-    entrypoint: >
-      /bin/bash -c "
-      apt-get update && 
-      apt-get install -y --no-install-recommends chromium fonts-liberation libnss3 && 
-      odoo -d postgres -i login_test --test-enable --stop-after-init
-      "
-    profiles:
-      - test
 
 volumes:
   odoo-db-data:
