@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:16
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
@@ -9,23 +9,51 @@ services:
       - odoo-db-data:/var/lib/postgresql/data
 
   web:
-      image: odoo:18.0
-      depends_on:
-        - db
-      ports:
-        - "8069:8069"
-      volumes:
-        - odoo-web-data:/var/lib/odoo
-        - ./config:/etc/odoo            # This links your Windows config folder
-        - ./addons:/mnt/extra-addons
-      environment:
-        - HOST=db
-        - USER=odoo
-        - PASSWORD=odoo
-      # This command tells Odoo specifically to use your config file
-      command: odoo -c /etc/odoo/odoo.conf
+    image: odoo:19.0
+    user: root
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    entrypoint: >
+      /bin/bash -c "
+      apt-get update && 
+      apt-get install -y --no-install-recommends chromium fonts-liberation libnss3 && 
+      /entrypoint.sh odoo
+      "
 
-# THIS PART IS MISSING OR MISALIGNED:
+  # Separate service for running tests
+  test:
+    image: odoo:19.0
+    user: root
+    depends_on:
+      - db
+      - web
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+      - ./config:/etc/odoo
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    entrypoint: >
+      /bin/bash -c "
+      apt-get update && 
+      apt-get install -y --no-install-recommends chromium fonts-liberation libnss3 && 
+      odoo -d postgres -i login_test --test-enable --stop-after-init
+      "
+    profiles:
+      - test
+
 volumes:
-  odoo-web-data:
   odoo-db-data:
+  odoo-web-data:
