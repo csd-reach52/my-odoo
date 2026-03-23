@@ -2,11 +2,21 @@ import "dotenv/config";
 import { Browser, By, Builder } from "selenium-webdriver";
 import { waitUntilVisible } from "./utils/utils.js";
 
-const loginUrl = "http://localhost:8069/web/login";
-const userName = process.env.ODOO_USERNAME;
-const password = process.env.ODOO_PASSWORD;
+const loginUrl = `${process.env.UAT_ODOO_URL}/web/login`;
+const userName = process.env.UAT_ODOO_USERNAME;
+const password = process.env.UAT_ODOO_PASSWORD;
+
+async function isLoggedIn(driver) {
+  try {
+    await waitUntilVisible(driver, By.css('img[alt="User"]'));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
 
 async function loginTest(driver) {
+  await driver.get(loginUrl);
   // log in
   const userNameInput = await waitUntilVisible(driver, By.id("login"));
   const passwordInput = await waitUntilVisible(driver, By.id("password"));
@@ -25,6 +35,7 @@ async function loginTest(driver) {
 async function logoutTest(driver) {
   // // log out started
 
+  await driver.get(loginUrl);
   // 1. Click the avatar to open the menu
   const avatar = await waitUntilVisible(driver, By.css('img[alt="User"]'));
   await avatar.click();
@@ -40,7 +51,7 @@ async function main() {
   let driver;
   try {
     driver = await new Builder().forBrowser(Browser.CHROME).build();
-    await driver.get(loginUrl);
+    console.log("Full URL being sent to Selenium:", loginUrl);
     await loginTest(driver);
     await logoutTest(driver);
   } catch (e) {
@@ -52,4 +63,4 @@ async function main() {
 
 // main();
 
-export { loginTest, logoutTest };
+export { loginTest, logoutTest, isLoggedIn };
