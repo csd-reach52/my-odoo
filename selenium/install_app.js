@@ -1,9 +1,9 @@
 import { Builder, By, until } from "selenium-webdriver";
 import "dotenv/config";
 import { loginTest } from "./login-test.js";
-import { waitUntilVisible,  } from "./utils/utils.js";
+import { expectCheck, waitUntilVisible,  } from "./utils/utils.js";
 
-const pathUrl = "http://localhost:8069/odoo/apps";
+const pathUrl = `${process.env.ODOO_URL}/odoo/apps`;
 
 async function activateApp(driver, appTitle, skipInstall = false) {
   // check kanban view is visible
@@ -52,15 +52,12 @@ async function activateApp(driver, appTitle, skipInstall = false) {
 
   const finalCheck = await driver.findElements(appActivateButtonXPath);
 
-  if (finalCheck.length === 0) {
-    console.log("✅ TEST PASSED: 'Activate' button is confirmed GONE.");
-  } else {
-    // This will trigger the 'catch' block in your main() function
-    throw new Error(
-      `❌ TEST FAILED: 'Activate' button is still present for ${appTitle}`,
-    );
-  }
-
+  expectCheck(
+    finalCheck.length === 0,
+    `'Activate' button is confirmed GONE for ${appTitle}.`,
+    `'Activate' button is still present for ${appTitle}.`,
+  );
+ 
   console.log(`${appTitle} activation sequence completed successfully.`);
 }
 
@@ -68,7 +65,6 @@ async function main() {
   let driver = await new Builder().forBrowser("chrome").build();
   try {
     await driver.get(pathUrl);
-    // Ensure loginTest is awaited correctly
     await loginTest(driver);
     await activateApp(driver, "Fleet");
   } catch (error) {
