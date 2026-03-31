@@ -1,8 +1,5 @@
-import "dotenv/config";
-import { Builder, By, until } from "selenium-webdriver";
-import { loginTest, logoutTest } from "./lib_auth.js";
+import {By, until} from "selenium-webdriver";
 import { waitUntilVisible } from "./utils/utils.js";
-const salePathURL = `${process.env.UAT_ODOO_URL}/odoo/sales`;
 
 async function clickCompanyByName(driver, name) {
   try {
@@ -10,7 +7,6 @@ async function clickCompanyByName(driver, name) {
     const menu = await waitUntilVisible(
       driver,
       By.css(".o_switch_company_menu"),
-      10000,
     );
     await menu.click();
 
@@ -20,7 +16,6 @@ async function clickCompanyByName(driver, name) {
     const companyItem = await waitUntilVisible(
       driver,
       By.xpath(companyXpath),
-      5000,
     );
 
     console.log(`Selecting company: ${name}`);
@@ -33,29 +28,5 @@ async function clickCompanyByName(driver, name) {
   }
 }
 
-async function main() {
-  const driver = await new Builder().forBrowser("chrome").build();
-  try {
-    // login
-    await loginTest(driver);
-    // sale path
-    await driver.get(salePathURL);
 
-    // switch company
-    await clickCompanyByName(driver, "reach52 Kenya");
-
-    // switch another
-    await clickCompanyByName(driver, "reach52 India");
-
-    // logout
-    await logoutTest(driver);
-
-    console.log("Tour completed successfully.");
-  } catch (err) {
-    console.error("Tour failed:", err);
-  } finally {
-    await driver.quit();
-  }
-}
-
-main();
+export { clickCompanyByName };
