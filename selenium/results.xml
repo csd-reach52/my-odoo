@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="12.288" tests="2" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-04-14T17:21:03" tests="0" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="New Sales Suite" timestamp="2026-04-14T17:21:03" tests="2" file="C:\Users\dada\Desktop\my-odoo\selenium\tests.sale.js" time="12.287" failures="1">
+    <testcase name="New Sales Suite &quot;before all&quot; hook for &quot;SN1: As an ERP user, I should not be able to confirm a sales order if the quantity is zero.&quot;" time="12.241" classname="&quot;before all&quot; hook for &quot;SN1: As an ERP user, I should not be able to confirm a sales order if the quantity is zero.&quot;">
+      <failure message="Waiting for element to be located By(css selector, *[id=&quot;login&quot;])
+Wait timed out after 10007ms" type="TimeoutError"><![CDATA[TimeoutError: Waiting for element to be located By(css selector, *[id="login"])
+Wait timed out after 10007ms
+    at C:\Users\dada\Desktop\my-odoo\selenium\node_modules\selenium-webdriver\lib\webdriver.js:929:22
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

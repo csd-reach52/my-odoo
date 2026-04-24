@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="74.723" tests="2" failures="1">
+  <testsuite name="Root Suite" timestamp="2026-04-24T07:25:56" tests="0" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="New Sales Suite" timestamp="2026-04-24T07:25:56" tests="2" file="C:\Users\dada\Desktop\my-odoo\selenium\tests.sale.js" time="74.720" failures="1">
+    <testcase name="New Sales Suite &quot;before all&quot; hook for &quot;SN1: As an ERP user, I should not be able to confirm a sales order if the quantity is zero.&quot;" time="74.717" classname="&quot;before all&quot; hook for &quot;SN1: As an ERP user, I should not be able to confirm a sales order if the quantity is zero.&quot;">
+      <failure message="Timeout of 60000ms exceeded. For async tests and hooks, ensure &quot;done()&quot; is called; if returning a Promise, ensure it resolves. (C:\Users\dada\Desktop\my-odoo\selenium\tests.sale.js)" type="Error"><![CDATA[Error: Timeout of 60000ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves. (C:\Users\dada\Desktop\my-odoo\selenium\tests.sale.js)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

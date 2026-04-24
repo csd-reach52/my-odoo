@@ -1,0 +1,3 @@
+summary,description,expected
+Verify Login,"Open app, enter credentials",User reaches dashboard
+Verify Logout,Click logout button,User is redirected to login

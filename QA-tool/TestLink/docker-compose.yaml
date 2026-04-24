@@ -1,0 +1,29 @@
+services:
+  testlink:
+    build: .
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=testlink
+      - DB_USER=testlink
+      - DB_PASSWORD=testlink
+    volumes:
+      - testlink_data:/var/www/html
+
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testlink
+      MYSQL_USER: testlink
+      MYSQL_PASSWORD: testlink
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  testlink_data:
+  db_data:

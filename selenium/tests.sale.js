@@ -1,4 +1,8 @@
 import "dotenv/config";
+/**
+ * run with npx mocha .\tests.sale.js --timeout 30000
+ * for report: npx mocha sales.test.js --reporter mocha-junit-reporter
+ */
 import { Builder, By } from "selenium-webdriver";
 import { loginTest } from "./lib_auth.js";
 import { clickCompanyByName } from "./lib_common_tour.js";
